@@ -1,6 +1,7 @@
-use std::{io::stdin, ptr::null};
 use serde::{Serialize,Deserialize};
 use serde_json::to_string;
+use std::io;
+use std::io::BufRead;
 
 #[derive(Deserialize, Debug)]
 struct Msg {
@@ -9,20 +10,24 @@ struct Msg {
     dcard: Option<i8>,
 }
 
+#[derive(Serialize)]
+struct Smsg {
+    action: String,
+}
 fn hit(){
-    let msg: Msg = Msg { action: ("hit").to_string(), pcard: Option,dcard: Option};
+    let msg: Smsg = Smsg { action: ("hit").to_string()};
     let json = serde_json::to_string(&msg).unwrap();
     println!("{}",json);
 }
 fn stand() {   
-    let msg: Msg = Msg { action: ("stand").to_string(), pcard: Option,dcard: Option};
+    let msg: Smsg = Smsg { action: ("stand").to_string()};
     let json = serde_json::to_string(&msg).unwrap();
     println!("{}",json);}
 fn main() {
     let stdin = io::stdin();
     let mut handle = stdin.lock();
     let mut total = 0;
-    let mut cards:Vec<i8>;
+    let mut cards:Vec<i8> = vec![0];
     let mut ace_count = 0;
     loop {
         let mut line = String::new();
