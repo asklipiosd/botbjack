@@ -15,11 +15,7 @@ struct MsgInit {
     pcard: i8,
     dcard: i8,
 }
-#[derive(serde::Serialize)]
-struct Deal {
-    action: String,
-    card: i8,
-}
+
 #[derive(serde::Deserialize)]
 struct BotResponse {
     action: String,
@@ -32,9 +28,10 @@ fn init(plcard:i8, decard:i8, mut input: &ChildStdin) {
 }
 
 fn deal(card: i8, mut input: &ChildStdin) {
-    let deal: Deal = Deal {action: ("deal").to_string(), card: (card)};
+    let deal: MsgInit = MsgInit { action: ("deal").to_string(), pcard:(card), dcard:(0)};
     let json = serde_json::to_string(&deal).unwrap();
     writeln!(input, "{}",json).unwrap();
+    input.flush().unwrap();
 }
 
 fn res() {}
